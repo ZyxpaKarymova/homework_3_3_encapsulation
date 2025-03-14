@@ -30,19 +30,25 @@ public class ProductBasket {
         return totalCost;
     }
 
-    //Метод, который печатает содержимое корзины: метод ничего не принимает и не возвращает, но печатает в консоль сообщение вида:
+    //Изменили метод вывода, который печатает содержимое корзины, чтобы результат выводился в следующем виде:
     //<имя продукта>: <стоимость>
-    //<имя продукта>: <стоимость>
-    //<имя продукта>: <стоимость>
+    //<имя продукта со скидкой>: <стоимость> (<скидка>%)
+    //<имя продукта c фиксированной ценой>: Фиксированная цена <значение константы фиксированной цены>
     //Итого: <общая стоимость корзины>
+    //Специальных товаров: <Количество специальных товаров>
     public void printBasket() {
         if (count == 0) {
             System.out.println("в корзине пусто");
         } else {
-            for (int i = 0; i < count; i++) {
-                System.out.println(products[i].getName() + ": " + products[i].getPrice());
-            }
+            int specialCount = 0;
+                    for (int i = 0; i < count; i++) {
+                        System.out.println(products[i].toString());
+                        if (products[i].isSpecial()) {
+                            specialCount++;
+                        }
+                    }
             System.out.println("Итого: " + getTotalCost());
+            System.out.println("Специальных товаров: " + specialCount);
         }
     }
 
