@@ -1,46 +1,67 @@
-import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.article.Article;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.BestResultNotFound;
+import org.skypro.skyshop.search.SearchEngine;
 
 public class App {
     public static void main(String[] args) {
-        // Создаем несколько продуктов
-        Product product1 = new Product("Арбуз", 250);
-        Product product2 = new Product("Дыня", 230);
-        Product product3 = new Product("Мандарин", 170);
+        checkEceptions();
+        bestResult();
+    }
+    public static void checkEceptions() {
+        try {
+            //Создайте несколько продуктов и нарочно заполните их поля неправильно.
+            //Затем обработайте IllegalArgumentException
+            // в блоках try и catch
+            //В качестве обработки можно просто выводить сообщение из исключения
 
-        // Создаем корзину
-        ProductBasket basket = new ProductBasket();
+            SimpleProduct invalidProduct1 = new SimpleProduct("", 500);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+        try {
+            // Цена 0
+            SimpleProduct invalidProduct2 = new SimpleProduct("Арбуз", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+        try {
+            // Скидка ниже 0
+            DiscountedProduct invalidProduct3 = new DiscountedProduct("Дыня", 100, -5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
 
-        // Добавляем продукты в корзину
-        basket.addProduct(product1);
-        basket.addProduct(product2);
-        basket.addProduct(product3);
+    }
 
-        // Пытаемся добавить продукт в заполненную корзину
-        basket.addProduct(new Product("Колбаса", 260));
-        basket.addProduct(new Product("Бекон", 130));
-        basket.addProduct(new Product("Сосиски", 170)); // Невозможно добавить продукт
+    public static void bestResult() {
+        SearchEngine searchEngine = new SearchEngine(10);
 
-        // Печать содержимого корзины
-        basket.printBasket();
+        // Добавляем товары и статьи
+        searchEngine.add(new SimpleProduct("Арбуз", 150));
+        searchEngine.add(new DiscountedProduct("Дыня", 130, 20));
+        searchEngine.add(new Article("Когда можно есть арбузы", "Арбузы лучше есть летом в августе."));
+        searchEngine.add(new Article("Где растет дыня", "Дыня растет на бахче."));
 
-        // Получение общей стоимости корзины
-        System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
-        // Поиск товара, который есть в корзине
-        System.out.println("Есть ли в корзине Арбуз? " + basket.containsProduct("Арбуз"));
+        // Демонстрация поиска
+        try {
+            System.out.println("Наиболее подходящий результат для запроса 'арбуз':");
+            System.out.println(searchEngine.findBestMatch("Арбуз"));
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
 
-        // Поиск товара, которого нет в корзине
-        System.out.println("Есть ли в корзине Манго? " + basket.containsProduct("Манго"));
-
-        // Очистка корзины
-        basket.clearBasket();
-
-        // Печать содержимого пустой корзины
-        basket.printBasket();
-        // Получение стоимости пустой корзины
-        System.out.println("Общая стоимость пустой корзины: " + basket.getTotalCost());
-
-        // Поиск товара по имени в пустой корзине
-        System.out.println("Есть ли в корзине Арбуз? " + basket.containsProduct("Арбуз"));
+        try {
+            System.out.println("\nНаиболее подходящий результат для запроса 'ананас':");
+            System.out.println(searchEngine.findBestMatch("ананас"));
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
     }
 }
+
+
+
+
+
