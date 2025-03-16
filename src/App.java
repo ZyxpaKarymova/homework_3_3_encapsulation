@@ -1,46 +1,67 @@
 import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.product.DiscountedProduct;
-import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
-import org.skypro.skyshop.search.Searchable;
 
 public class App {
     public static void main(String[] args) {
-        // Создаем несколько продуктов
-        SimpleProduct product1 = new SimpleProduct("Арбуз", 250);
-        DiscountedProduct product2 = new DiscountedProduct("Дыня", 230, 10);
-        FixPriceProduct product3 = new FixPriceProduct("Мандарин");
+        checkEceptions();
+        bestResult();
+    }
+    public static void checkEceptions() {
+        try {
+            //Создайте несколько продуктов и нарочно заполните их поля неправильно.
+            //Затем обработайте IllegalArgumentException
+            // в блоках try и catch
+            //В качестве обработки можно просто выводить сообщение из исключения
 
-        Article article1 = new Article("Когда можно есть арбузы", "Арбузы лучше есть летом в августе");
-        Article article2 = new Article("Где растет дыня", "Дыня растет на бахче.");
+            SimpleProduct invalidProduct1 = new SimpleProduct("", 500);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+        try {
+            // Цена 0
+            SimpleProduct invalidProduct2 = new SimpleProduct("Арбуз", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+        try {
+            // Скидка ниже 0
+            DiscountedProduct invalidProduct3 = new DiscountedProduct("Дыня", 100, -5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
 
-        // Создаем SearchEngine
+    }
+
+    public static void bestResult() {
         SearchEngine searchEngine = new SearchEngine(10);
 
-        // Добавляем товары и статьи в SearchEngine
-        searchEngine.add(product1);
-        searchEngine.add(product2);
-        searchEngine.add(product3);
-        searchEngine.add(article1);
-        searchEngine.add(article2);
+        // Добавляем товары и статьи
+        searchEngine.add(new SimpleProduct("Арбуз", 150));
+        searchEngine.add(new DiscountedProduct("Дыня", 130, 20));
+        searchEngine.add(new Article("Когда можно есть арбузы", "Арбузы лучше есть летом в августе."));
+        searchEngine.add(new Article("Где растет дыня", "Дыня растет на бахче."));
 
         // Демонстрация поиска
-        System.out.println("Результаты поиска по запросу 'арбуз':");
-        Searchable[] results = searchEngine.search("Арбуз");
-        for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result.getStringRepresentation());
-            }
+        try {
+            System.out.println("Наиболее подходящий результат для запроса 'арбуз':");
+            System.out.println(searchEngine.findBestMatch("Арбуз"));
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
-        System.out.println("\nРезультаты поиска по запросу 'дыня':");
-        results = searchEngine.search("Дыня");
-        for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result.getStringRepresentation());
-            }
+
+        try {
+            System.out.println("\nНаиболее подходящий результат для запроса 'ананас':");
+            System.out.println(searchEngine.findBestMatch("ананас"));
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
     }
 }
+
+
+
 
 

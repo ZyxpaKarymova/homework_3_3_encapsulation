@@ -18,7 +18,12 @@ public class FixPriceProduct extends Product {
     }
 
     @Override
+    public String getSearchTerm() {
+        return getName();
+    }
+
+    @Override
     public String toString() {
-        return getName() + ": Фиксированная цена " + FIXED_PRICE;
+        return getName() + " (" + getContentType() + "): Фиксированная цена " + FIXED_PRICE;
     }
 }

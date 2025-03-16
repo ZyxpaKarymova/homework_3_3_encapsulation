@@ -7,6 +7,12 @@ public class Article implements Searchable {
     private final String text;
 
     public Article(String title, String text) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Название статьи не может быть пустым или состоять только из пробелов.");
+        }
+        if (text == null || text.isBlank()) {
+            throw new IllegalArgumentException("Текст статьи не может быть пустым или состоять только из пробелов.");
+        }
         this.title = title;
         this.text = text;
     }
@@ -21,12 +27,12 @@ public class Article implements Searchable {
 
     @Override
     public String toString() {
-        return title + "\n" + text;
+        return getTitle() + " (" + getContentType() + ")";
     }
 
     @Override
     public String getSearchTerm() {
-        return toString();
+        return getTitle() + " " + getText();
     }
 
     @Override

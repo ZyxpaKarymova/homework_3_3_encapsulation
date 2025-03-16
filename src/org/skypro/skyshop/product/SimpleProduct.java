@@ -5,6 +5,9 @@ public class SimpleProduct extends Product{
 
     public SimpleProduct(String name, int price) {
         super(name);
+        if (price <= 0) {
+            throw new IllegalArgumentException("Цена продукта должна быть строго больше 0");
+        }
         this.price = price;
     }
 
@@ -19,7 +22,17 @@ public class SimpleProduct extends Product{
     }
 
     @Override
+    public String getContentType() {
+        return "SIMPLE_PRODUCT"; // или просто "PRODUCT"
+    }
+
+    @Override
+    public String getSearchTerm() {
+        return getName();
+    }
+
+    @Override
     public String toString() {
-        return getName() + ": " + getPrice();
+        return getName() + " (" + getContentType() + "): " + getPrice();
     }
 }
