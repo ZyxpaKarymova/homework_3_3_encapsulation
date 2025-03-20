@@ -28,12 +28,16 @@ public class DiscountedProduct extends Product {
     }
 
     @Override
-    public String getSearchTerm() {
-        return getName();
+//    public String getSearchTerm() {
+//        return getName();
+//    }
+
+    public String getContentType() {
+        return "DISCOUNTED_PRODUCT";
     }
 
     @Override
     public String toString() {
-        return getName() + ": " + " (" + getContentType() + "): " + getPrice() + " (" + discount + "%)";
+        return getName() + ":" + " (" + getContentType() + "): " + getPrice() + " (" + discount + "%)";
     }
     }

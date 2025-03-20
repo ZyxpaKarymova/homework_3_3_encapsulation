@@ -10,13 +10,13 @@ public abstract class Product implements Searchable {
             throw new IllegalArgumentException ("Название продукта не может быть пустой строкой или null");
         }
         this.name = name;
-    }
+           }
 
     public String getName() {
         return name;
     }
 
-    public abstract int getPrice();
+       public abstract int getPrice();
 
     public abstract boolean isSpecial();
 

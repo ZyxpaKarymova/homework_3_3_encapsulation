@@ -23,12 +23,7 @@ public class SimpleProduct extends Product{
 
     @Override
     public String getContentType() {
-        return "SIMPLE_PRODUCT"; // или просто "PRODUCT"
-    }
-
-    @Override
-    public String getSearchTerm() {
-        return getName();
+        return "SIMPLE_PRODUCT";
     }
 
     @Override

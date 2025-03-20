@@ -2,73 +2,63 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class ProductBasket {
-    private final Product[] products;
-    private int count;
+    private final List<Product> products;
 
     public ProductBasket() {
-        this.products = new Product[5];
-        this.count = 0;
+        this.products = new ArrayList<>();
     }
 
-    //Метод добавления продукта в корзину: метод принимает в себя продукт и ничего не возвращает.
     public void addProduct(Product product) {
-        if (count < products.length) {
-            products[count] = product;
-            count++;
-        } else {
-            System.out.println("Невозможно добавить продукт");
-        }
+        products.add(product);
     }
 
-    //Метод получения общей стоимости корзины: метод ничего не принимает и возвращает целое число.
+    public List<Product> removeProductsByName(String name) {
+        List<Product> removedProducts = new ArrayList<>();
+        Iterator<Product> iterator = products.iterator();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getName().equals(name)) {
+                removedProducts.add(product);
+                iterator.remove();
+            }
+        }
+        return removedProducts;
+    }
+
     public int getTotalCost() {
         int totalCost = 0;
-        for (int i = 0; i < count; i++) {
-            totalCost += products[i].getPrice();
+        for (Product product : products) {
+            totalCost += product.getPrice();
         }
         return totalCost;
     }
-
-    //Изменили метод вывода, который печатает содержимое корзины, чтобы результат выводился в следующем виде:
-    //<имя продукта>: <стоимость>
-    //<имя продукта со скидкой>: <стоимость> (<скидка>%)
-    //<имя продукта c фиксированной ценой>: Фиксированная цена <значение константы фиксированной цены>
-    //Итого: <общая стоимость корзины>
-    //Специальных товаров: <Количество специальных товаров>
     public void printBasket() {
-        if (count == 0) {
-            System.out.println("в корзине пусто");
+        if (products.isEmpty()) {
+            System.out.println("В корзине пусто");
         } else {
-            int specialCount = 0;
-                    for (int i = 0; i < count; i++) {
-                        System.out.println(products[i].toString());
-                        if (products[i].isSpecial()) {
-                            specialCount++;
-                        }
-                    }
+            for (Product product : products) {
+                System.out.println(product);
+            }
             System.out.println("Итого: " + getTotalCost());
-            System.out.println("Специальных товаров: " + specialCount);
         }
     }
 
-    //Метод, проверяющий продукт в корзине по имени: метод принимает в себя строку имени и возвращает boolean
-    //в зависимости от того, есть продукт в корзине или его нет.
     public boolean containsProduct(String productName) {
-        for (int i = 0; i < count; i++) {
-            if (products[i].getName().equals(productName)) {
+        for (Product product : products) {
+            if (product.getName().equals(productName)) {
                 return true;
             }
         }
         return false;
     }
 
-    //Метод очистки корзины: метод ничего не принимает и очищает массив, проставляя всем его элементам null
     public void clearBasket() {
-        for (int i = 0; i < count; i++) {
-            products[i] = null;
-        }
-        count = 0;
+        products.clear();
     }
 }
 
