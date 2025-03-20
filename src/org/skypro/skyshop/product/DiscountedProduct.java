@@ -27,11 +27,6 @@ public class DiscountedProduct extends Product {
         return true;
     }
 
-    @Override
-//    public String getSearchTerm() {
-//        return getName();
-//    }
-
     public String getContentType() {
         return "DISCOUNTED_PRODUCT";
     }
