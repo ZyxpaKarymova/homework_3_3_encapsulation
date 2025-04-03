@@ -8,12 +8,14 @@ import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
         listDemonstaration();
         changedSearchEngine();
     }
+
 
 
     public static void listDemonstaration() {
@@ -58,7 +60,6 @@ public class App {
         // Печать содержимого корзины после удаления
         System.out.println("\nСодержимое корзины после удаления:");
         basket.printBasket();
-
     }
 
     public static void changedSearchEngine() {
@@ -72,26 +73,35 @@ public class App {
         searchEngine.add(new Article("Где растет дыня", "Дыня растет на бахче."));
 
         // Демонстрация поиска
-        System.out.println("Результаты поиска по запросу 'арбуз':");
-        List<Searchable> results = searchEngine.search("Арбуз");
-        for (Searchable result : results) {
-            System.out.println(result);
+        System.out.println("\nРезультаты поиска по запросу 'арбуз':");
+        Map<String, Searchable> results = searchEngine.search("Арбуз");
+        if (results.isEmpty()) {
+            System.out.println("Ничего не найдено");
+        } else {
+            for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+                System.out.println(entry.getValue());
+            }
         }
 
+        // Поиск по запросу "банан"
         System.out.println("\nРезультаты поиска по запросу 'дыня':");
         results = searchEngine.search("Дыня");
-        for (Searchable result : results) {
-            System.out.println(result);
-        }
-        System.out.println("\nРезультаты поиска по запросу 'манго':");
-        results = searchEngine.search("манго");
         if (results.isEmpty()) {
-            System.out.println("Ничего не найдено.");
+            System.out.println("Ничего не найдено");
         } else {
-            for (Searchable result : results) {
-                System.out.println(result);
+            for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+                System.out.println(entry.getValue());
             }
+        }
+
+        // Поиск несуществующего товара
+        System.out.println("\nРезультаты поиска по запросу 'апельсин':");
+        results = searchEngine.search("апельсин");
+        if (results.isEmpty()) {
+            System.out.println("Ничего не найдено");
         }
     }
 }
+
+
 

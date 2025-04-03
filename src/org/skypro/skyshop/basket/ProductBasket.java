@@ -3,62 +3,58 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductBasket {
-    private final List<Product> products;
+    private final Map<String, List<Product>> productsMap;
 
     public ProductBasket() {
-        this.products = new ArrayList<>();
+        this.productsMap = new HashMap<>();
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        String name = product.getName();
+        if (!productsMap.containsKey(name)) {
+            productsMap.put(name, new ArrayList<>());
+        }
+        productsMap.get(name).add(product);
     }
 
     public List<Product> removeProductsByName(String name) {
-        List<Product> removedProducts = new ArrayList<>();
-        Iterator<Product> iterator = products.iterator();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getName().equals(name)) {
-                removedProducts.add(product);
-                iterator.remove();
-            }
-        }
-        return removedProducts;
+        List<Product> removedProducts = productsMap.remove(name);
+        return removedProducts != null ? removedProducts : new ArrayList<>();
     }
-
     public int getTotalCost() {
         int totalCost = 0;
-        for (Product product : products) {
-            totalCost += product.getPrice();
+        for (List<Product> products : productsMap.values()) {
+            for (Product product : products) {
+                totalCost += product.getPrice();
+            }
         }
         return totalCost;
     }
+
     public void printBasket() {
-        if (products.isEmpty()) {
+        if (productsMap.isEmpty()) {
             System.out.println("В корзине пусто");
         } else {
-            for (Product product : products) {
-                System.out.println(product);
+            for (List<Product> products : productsMap.values()) {
+                for (Product product : products) {
+                    System.out.println(product);
+                }
             }
             System.out.println("Итого: " + getTotalCost());
         }
     }
 
     public boolean containsProduct(String productName) {
-        for (Product product : products) {
-            if (product.getName().equals(productName)) {
-                return true;
-            }
-        }
-        return false;
+        return productsMap.containsKey(productName);
     }
 
     public void clearBasket() {
-        products.clear();
+        productsMap.clear();
     }
 }
 
