@@ -4,8 +4,8 @@ public class DiscountedProduct extends Product {
     private final int basePrice;
     private final int discount;
 
-    public DiscountedProduct(String name, int basePrice, int discount) {
-        super(name);
+    public DiscountedProduct(String name, String description, int basePrice, int discount) {
+        super(name,description);
         if (basePrice <= 0) {
             throw new IllegalArgumentException("Цена продукта должна быть строго больше 0");
         }
